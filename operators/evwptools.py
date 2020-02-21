@@ -74,7 +74,7 @@ class alignSmithEVWP(starAlignOp):
 
 class alignRoomEVWP(starAlignOp):
     bl_idname = 'evwp_tools.align_room'
-    bl_label = "Align to Bedroom Weapon Rack Position"
-    bl_description = "Align to Bedroom Weapon Rack Position"
+    bl_label = "Align to Bedroom Rack Position"
+    bl_description = "Align to Bedroom Rack Position"
     bl_options = {"REGISTER", "UNDO"}    
     starType = "EVWP_Room"
