@@ -73,8 +73,8 @@ class ExportEVWP(Operator, ExportHelper):
         for starType in ["Sheath","Room","Pendant","Smith"]:
             try:
                 nodeProps = self.decomposeNode(getStarTypeNode("EVWP_%s"%starType),starType)
-                if starType == "Sheathe":
-                    nodeProps["sheatheScale"] -= 1
+                if starType == "Sheath":
+                    nodeProps["sheathScale"] -= 1
                 for prop in nodeProps:
                     evwpData[prop] = nodeProps[prop]
             except Exception as e:
