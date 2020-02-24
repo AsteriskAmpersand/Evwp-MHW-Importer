@@ -41,6 +41,10 @@ evwpStruct = OrderedDict([
     ("unknBytes" ,"byte[5]"),#<bgcolor=0x000000> 
 ])
 
+def stupidEvwp(evwpArray):
+    evwpArray[1],evwpArray[2]=evwpArray[2],evwpArray[1]
+    return
+    
 class Evwp(PyCStruct):
     defaultProperties = {"ibBytes":0x18091001,
                 "magic":"EVWP",
@@ -57,7 +61,20 @@ class Evwp(PyCStruct):
                 return
         super().__init__()
         return
-                
+    def retardationToggle(self):
+        for stupid in [self.smithRot,self.smithPos,self.roomPos,self.roomRot,
+                      self.sheathPos,self.sheathRot]:
+            stupidEvwp(stupid)
+    def marshall(self,data):
+        super().marshall(data)
+        self.retardationToggle()
+        return self
+    def serialize(self):
+        self.retardationToggle()
+        data = super().serialize()
+        self.retardationToggle()
+        return data
+        
     
 if __name__ in "__main__":
     from pathlib import Path
