@@ -62,8 +62,7 @@ class Evwp(PyCStruct):
         super().__init__()
         return
     def retardationToggle(self):
-        for stupid in [self.smithRot,self.smithPos,self.roomPos,self.roomRot,
-                      self.sheathPos,self.sheathRot]:
+        for stupid in [self.sheathPos,self.sheathRot]:
             stupidEvwp(stupid)
     def marshall(self,data):
         super().marshall(data)
