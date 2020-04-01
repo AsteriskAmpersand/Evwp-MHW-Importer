@@ -7,7 +7,7 @@ import bpy
 from .evwp import Evwp
 
 class EVWPTools(bpy.types.Panel):
-    bl_category = "MHW Physics"
+    bl_category = "MHW Tools"
     bl_idname = "panel.mhw_evwp"
     bl_label = "EVWP Tools"
     bl_space_type = "VIEW_3D"
