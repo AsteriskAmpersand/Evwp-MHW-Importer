@@ -30,15 +30,20 @@ evwpStruct = OrderedDict([
     ("sheathPos" ,"float[3]"),#<name="Sheathed Weapon Position", bgcolor=0x30FF30> 
     ("sheathRot" ,"float[3]"),#<name="Sheathed Weapon Rotation", bgcolor=0x70FF70> 
     ("sheathScale", "float"),
-    ("witcherUnkn","int32"),
-    ("secondaryBoneBehaviour","int32"),
-    ("weebUnkn","int32"),
+    ("presetIdOffsetShake","int32"),
+    ("motionID","int32"),
+    ("weaponDependent","int32"),
     #<name="Bitflags", bgcolor=0xB0FFFF, comment="Settings for various weapon tricks"> 
-    ("globalEFX" ,"int32"),#<name="Global EFX", bgcolor=0x00FFFF> 
+    ("globalEPV" ,"int32"),#<name="Global EFX", bgcolor=0x00FFFF> 
     ("pendantPos" ,"float[3]"),#<name="Pendant Position", bgcolor=0x3030FF, comment="On weapon, NOT room rack"> 
     ("pendantRot" ,"float[3]"),#<name="Pendant Rotation", bgcolor=0x7070FF, comment="On weapon, NOT room rack"> 
     ("pendantScale" ,"float"),#<name="Pendant Scale", bgcolor=0xB0B0FF, comment="On weapon, NOT room rack"> 
-    ("unknBytes" ,"byte[5]"),#<bgcolor=0x000000> 
+    ("attachPendantToMain" ,"byte"),
+    ("useEmissiveFactor" ,"byte"),
+    ("useSecondaryEmitColor" ,"byte"),
+    ("usePartsSwitchDelay" ,"byte"),
+    ("useChainSwitchDelay" ,"byte"),#<bgcolor=0x000000> 
+    #First one moves the pendant from the quiver/sheathe to the main weapon
 ])
 
 def stupidEvwp(evwpArray):
@@ -50,9 +55,11 @@ class Evwp(PyCStruct):
                 "magic":"EVWP",
                 "version":0x0d}
     fields = evwpStruct
-    properties = OrderedDict([("witcherUnkn","Witcher Unk"),("secondaryBoneBehaviour","Alt Bone Enum"),
-                  ("weebUnkn","Weeb Unk"),("globalEFX","EPV"),
-                  ("unknBytes","Flags")])#
+    properties = OrderedDict([("presetIdOffsetShake","Offset Shake Type"),("motionID","Sheathe Animation ID"),
+                  ("weaponDependent","Weapon Utility Value"),("globalEPV","EPV"),
+                  ("attachPendantToMain","Pendant on Main"),("useEmissiveFactor","Disable Emissive"),("useSecondaryEmitColor","Disable Secondary Emit Color"),
+                  ("usePartsSwitchDelay","Viscon Switch Delay"),("useChainSwitchDelay","Physics Switch Delay"),
+                  ])#
     def __init__(self,dataPath = None):
         if dataPath is not None:
             with open(dataPath,"rb") as inf:
@@ -84,14 +91,27 @@ if __name__ in "__main__":
         except:
             return False
     chunkPath = Path(r"E:\MHW\chunkG0")
-    fieldSets = {field:set() for field in evwpStruct}
-    with open("Bit Flags.txt","w") as outf: 
+    fieldSets = {field:{} for field in evwpStruct}
+    with open("Bit Flags.json","w") as outf: 
         for evwpf in chunkPath.rglob("*.evwp"):
             evFile = Evwp(evwpf)
             for field in fieldSets:
                 datum = getattr(evFile,field)
-                fieldSets[field].add(tuple(datum) if isIter(datum) else datum)
-            if evFile.unkn2[4] != 0:
-                print("%s - %s"%(evwpf.stem,list(evFile.unkn2)))
-    
+                datum = tuple(datum) if isIter(datum) else datum
+                if datum not in fieldSets[field]:
+                    fieldSets[field][datum] = []
+                fieldSets[field][datum].append(evwpf)
+        outf.write('{')
+        for field in fieldSets:
+            outf.write('"'+str(field)+'":{\n')
+            values = fieldSets[field]
+            for value in values:
+                outf.write('\t"'+str(value)+'":{\n')
+                pathings = values[value]
+                for path in pathings:
+                    outf.write('\t\t"'+str(path)+",\n")
+                outf.write('\t},\n')
+            outf.write('},\n')
+        outf.write('}\n')
+        #print(fieldSets["unknBytes"])
         
