@@ -55,7 +55,7 @@ class Evwp(PyCStruct):
                 "magic":"EVWP",
                 "version":0x0d}
     fields = evwpStruct
-    properties = OrderedDict([("presetIdOffsetShake","Offset Shake Type"),("motionID","Sheathe Animation ID"),
+    properties = OrderedDict([("presetIdOffsetShake","Offset Shake Type"),("motionID","LMT"),
                   ("weaponDependent","Weapon Utility Value"),("globalEPV","EPV"),
                   ("attachPendantToMain","Pendant on Main"),("useEmissiveFactor","Disable Emissive"),("useSecondaryEmitColor","Disable Secondary Emit Color"),
                   ("usePartsSwitchDelay","Viscon Switch Delay"),("useChainSwitchDelay","Physics Switch Delay"),
