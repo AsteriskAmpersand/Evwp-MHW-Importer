@@ -24,7 +24,7 @@ from .operators.evwpexport import menu_func_export as evwp_export
 from .operators.evwppanel import EVWPTools
 from .operators.evwptools import (resetAlignmentEVWP, alignSheathEVWP, alignSmithEVWP, alignRoomEVWP)
 
-from bpy.props import (StringProperty, IntProperty, FloatProperty, 
+from bpy.props import (StringProperty, IntProperty, FloatProperty, BoolProperty,
                        IntVectorProperty, FloatVectorProperty, BoolVectorProperty)
 def propTypeMap(propType):
     if "int" in propType or "byte" in propType:
@@ -38,6 +38,8 @@ def propTypeMap(propType):
                 return vecProp(IntVectorProperty)
             if "byte" in propType:
                 return vecProp(BoolVectorProperty)
+        elif "byte" in propType:
+            return BoolProperty
         return IntProperty
     if "float" in propType:
         if "[" in propType:

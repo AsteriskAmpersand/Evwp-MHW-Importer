@@ -6,8 +6,7 @@ Created on Tue Feb 18 12:06:04 2020
 """
 from bpy_extras.io_utils import ExportHelper
 from bpy.types import Operator
-from bpy.props import (StringProperty, IntProperty, FloatProperty, 
-                       IntVectorProperty, FloatVectorProperty, BoolVectorProperty)
+from bpy.props import StringProperty
 
 from .evwp import Evwp
 from .evwptools import getStarTypeNode

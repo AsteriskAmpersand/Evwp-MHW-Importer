@@ -6,12 +6,11 @@ Created on Tue Feb 18 12:06:04 2020
 """
 from bpy_extras.io_utils import ImportHelper
 from bpy.types import Operator
-from bpy.props import (StringProperty, IntProperty, FloatProperty, 
-                       IntVectorProperty, FloatVectorProperty, BoolVectorProperty)
+from bpy.props import StringProperty
 
 from .evwp import Evwp
 from mathutils import Matrix, Euler
-from math import degrees, radians
+from math import radians
 import bpy
 
 def transrotscale(trans,rot,scale):
@@ -108,9 +107,9 @@ class ImportEVWP(Operator, ImportHelper):
     @staticmethod
     def writeProperties(evwp):
         for prop in evwp.properties:
-            if "byte" in evwp.fields[prop]:
-                setattr(bpy.context.scene,"evwp_%s"%prop,list(map(bool, getattr(evwp,prop))))
-            else:
+            #if "byte" in evwp.fields[prop]:
+            #    setattr(bpy.context.scene,"evwp_%s"%prop,list(map(bool, getattr(evwp,prop))))
+            #else:
                 setattr(bpy.context.scene,"evwp_%s"%prop,getattr(evwp,prop))
             #bpy.types.Scene
             #bpy.context.scene
